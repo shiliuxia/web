@@ -9,6 +9,7 @@ const download = require('download')
 
 // 公共变量
 const KEY = process.env.JD_COOKIE
+const KEY2 = process.env.JD_COOKIE_2
 const serverJ = process.env.PUSH_KEY
 
 async function downFile () {
@@ -20,6 +21,12 @@ async function downFile () {
 async function changeFiele () {
    let content = await fs.readFileSync('./JD_DailyBonus.js', 'utf8')
    content = content.replace(/var Key = ''/, `var Key = '${KEY}'`)
+   await fs.writeFileSync( './JD_DailyBonus.js', content, 'utf8')
+    
+}
+async function changeFiele2 () {
+   let content = await fs.readFileSync('./JD_DailyBonus.js', 'utf8')
+   content = content.replace(/var Key = ''/, `var Key = '${KEY2}'`)
    await fs.writeFileSync( './JD_DailyBonus.js', content, 'utf8')
 }
 
@@ -47,6 +54,9 @@ async function start() {
   console.log('下载代码完毕')
   // 替换变量
   await changeFiele();
+  console.log('替换变量完毕')
+    // 替换变量
+  await changeFiele2();
   console.log('替换变量完毕')
   // 执行
   await exec("node JD_DailyBonus.js >> result.txt");
